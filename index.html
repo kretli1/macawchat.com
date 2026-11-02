@@ -439,6 +439,13 @@ input[type=range] { width: 100%; margin-top: 12px; accent-color: var(--azul); he
 .teste { margin-top: 28px; text-align: center; color: var(--muted); font-size: 15px; display: flex; justify-content: center; gap: 8px; align-items: center; flex-wrap: wrap; }
 .teste svg { color: var(--verde); }
 .arraste { display: none; }
+.adicionais-bloco { margin-top: 56px; }
+.adicionais-bloco h3 { font-family: var(--font-title); font-size: 22px; text-align: center; }
+.adicionais-bloco > p { margin: 8px auto 0; max-width: 680px; text-align: center; color: var(--muted); font-size: 15px; }
+.adicionais { margin-top: 24px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr)); }
+.adicional { border-radius: 16px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.adicional b { font-family: var(--font-title); font-size: 16px; }
+.adicional span { color: var(--muted); font-size: 14px; }
 .tabela-wrap { margin-top: 48px; overflow-x: auto; border-radius: 16px; box-shadow: inset 0 0 0 1px var(--line); background: var(--surface); -webkit-overflow-scrolling: touch; }
 table { width: 100%; min-width: 640px; border-collapse: collapse; table-layout: fixed; font-size: 15px; }
 th, td { padding: 14px 16px; text-align: center; border-bottom: 1px solid var(--line); }
@@ -530,13 +537,16 @@ noscript p { padding: 120px 16px; text-align: center; }
   const { useState, useEffect, useRef, useCallback } = React;
   const html = htm.bind(React.createElement);
 
-  // ===== Configuração — trocar os links de checkout pelos do AbacatePay =====
+  // ===== Configuração =====
+  // O pagamento é feito dentro do app (Perfil, aba Plano, pela Stripe): o botão
+  // do plano pago leva para lá, e quem não tem conta entra ou se cadastra antes.
   const APP_URL = 'https://app.macawchat.com';
+  const PAGINA_DO_PLANO = APP_URL + '/perfil?aba=plano';
   const CHECKOUT = {
     free: APP_URL,
-    essencial: '#checkout-essencial',
-    pro: '#checkout-pro',
-    scale: '#checkout-scale',
+    essencial: PAGINA_DO_PLANO,
+    pro: PAGINA_DO_PLANO,
+    scale: PAGINA_DO_PLANO,
   };
   const EMAIL = 'contato@macawchat.com';
   const WHATSAPP_NUM = '5521982372982';
@@ -764,6 +774,7 @@ noscript p { padding: 120px 16px; text-align: center; }
             <div className="hero-nota rev" style=${{ '--d': '320ms' }}>
               <span><${Icon} n="check" s=${16} w=${3} /> 14 dias de Pro, sem cartão</span>
               <span><${Icon} n="check" s=${16} w=${3} /> WhatsApp, Instagram e Messenger</span>
+              <span><${Icon} n="check" s=${16} w=${3} /> Vendas rastreadas sem custo por venda</span>
             </div>
           </div>
           <${ChatCelular} />
@@ -1059,16 +1070,16 @@ noscript p { padding: 120px 16px; text-align: center; }
 
   // ===== Recursos =====
   const RECURSOS = [
-    ['bot', 'Agentes de IA que atendem', 'Modelos prontos de SDR, Closer, Suporte e Qualificador. Treine com seus documentos e deixe a IA atender, qualificar e levar o lead até a compra, 24 horas por dia.', 'Essencial+'],
+    ['bot', 'Agentes de IA que atendem', 'Modelos prontos de SDR, Closer, Suporte e Qualificador. Treine com seus documentos e deixe a IA atender, qualificar e levar o lead até a compra, 24 horas por dia.', 'Planos pagos'],
     ['responder', 'Comentário vira direct', 'Responda o comentário em público e mande o link da página no direct do Instagram e do Messenger, para quem comentou a palavra-chave.', 'Todos'],
     ['raio', 'Gatilhos para cada entrada', 'Anúncio, comentário, direct, resposta a story, link com referência e webhook da sua plataforma de venda.', 'Todos'],
-    ['carteira', 'Agente de Cobrança', 'Escuta áudios e textos, entende a promessa de pagamento, confirma a data e cobra no dia certo.', 'Scale'],
+    ['carteira', 'Agente de Cobrança', 'Escuta áudios e textos, entende a promessa de pagamento, confirma a data e cobra no dia certo.', 'Planos pagos'],
     ['inbox', 'Caixa de entrada única', 'WhatsApp, Instagram, Messenger e Telegram numa tela só, com áudio, mídia e lembretes.', 'Todos'],
     ['kanban', 'CRM com Kanban e metas', 'Veja cada lead andando no funil e saiba quantos passaram de etapa por dia.', 'Todos'],
-    ['users', 'Grupos com lead scoring', 'Campanhas em grupos na ordem que você definiu e uma nota para cada membro: quem leu, reagiu e respondeu.', 'Scale'],
-    ['megafone', 'Anúncios com venda atribuída', 'Gerencie as campanhas da Meta e veja as vendas do chat atribuídas a cada anúncio pelo último clique.', 'Pro+'],
-    ['alvo', 'Compra no Pixel da Meta', 'O bloco do Pixel manda a Compra pela API de Conversões, ligada ao anúncio que trouxe o lead, para a Meta entregar para quem compra.', 'Pro+'],
-    ['split', 'Teste A/B nos fluxos', 'Divida o tráfego entre versões da mensagem e deixe os números escolherem a vencedora.', 'Pro+'],
+    ['users', 'Grupos com lead scoring', 'Campanhas em grupos na ordem que você definiu e uma nota para cada membro: quem leu, reagiu e respondeu.', 'Planos pagos'],
+    ['megafone', 'Anúncios com venda atribuída', 'Gerencie as campanhas da Meta e veja as vendas do chat atribuídas a cada anúncio pelo último clique.', 'Planos pagos'],
+    ['alvo', 'Compra no Pixel da Meta', 'O bloco do Pixel manda a Compra pela API de Conversões, ligada ao anúncio que trouxe o lead, para a Meta entregar para quem compra.', 'Planos pagos'],
+    ['split', 'Teste A/B nos fluxos', 'Divida o tráfego entre versões da mensagem e deixe os números escolherem a vencedora.', 'Planos pagos'],
     ['grafico', 'Dashboard de vendas e ROAS', 'Investido, receita, lucro e ROAS no mesmo painel, com metas em cada número.', 'Todos'],
     ['sino', 'Aviso de venda no celular', '"Nova venda!" com valor e produto direto na tela do seu celular, na hora.', 'Todos'],
   ];
@@ -1169,7 +1180,7 @@ noscript p { padding: 120px 16px; text-align: center; }
       ['Resultado real', 'Colunas de vendas, receita, ROAS real e custo por venda ao lado das métricas da Meta.'],
       ['Histórico de alterações', 'Quem mudou o quê na conta de anúncios.'],
       ['Formulários e leads', 'Crie formulários de cadastro e veja o que aconteceu com cada lead.'],
-      ['Atribuição de vendas', 'Cada venda creditada ao anúncio que trouxe o lead.'],
+      ['Atribuição de vendas', 'Cada venda creditada ao anúncio que trouxe o lead. Rastreie todas, sem pagar por venda rastreada.'],
       ['Pixel e API de Conversões', 'A Compra vai para a Meta para os anúncios aprenderem com quem compra.'],
       ['Venda de qualquer checkout', 'BuyGoods ou webhook pelo n8n, Make ou Zapier, com venda aprovada e reembolso.'],
       ['Aviso de número restrito', 'Saiba quando a Meta restringir um número ou uma conta.'],
@@ -1188,7 +1199,7 @@ noscript p { padding: 120px 16px; text-align: center; }
       ['APIs Oficiais da Meta', 'WhatsApp, Instagram e Messenger conectados pela janela oficial.'],
       ['Login em dois fatores', 'Código do app autenticador para entrar na conta.'],
       ['Sessões', 'Encerre com um clique as outras sessões abertas.'],
-      ['Seus dados', 'Exporte os seus dados quando quiser, como pede a LGPD.'],
+      ['Seus dados', 'Exporte os seus dados ou exclua a conta quando quiser, como pede a LGPD.'],
       ['App no celular', 'Instale o MacawChat na tela inicial do celular ou do computador.'],
       ['Tema claro e escuro', 'Do jeito que você preferir trabalhar.'],
       ['Polir com IA', 'Corrija o português de um texto com um clique.'],
@@ -1267,27 +1278,43 @@ noscript p { padding: 120px 16px; text-align: center; }
     { code: 'free', nome: 'Gratuito', desc: 'Para conhecer a plataforma e automatizar os primeiros atendimentos.', mes: 0, ano: 0,
       feats: ['1 conexão', '500 contatos ativos por mês', '3 automações publicadas', 'Caixa de entrada e CRM'] },
     { code: 'essencial', nome: 'Essencial', desc: 'Para começar a vender pelo chat com automações e IA.', mes: 147, ano: 1470,
-      feats: ['3 conexões', '5 mil contatos ativos', '20 automações e 2 funis', '2 agentes de IA', 'IA nos fluxos e webhooks'] },
-    { code: 'pro', nome: 'Pro', desc: 'Para quem investe em anúncios e quer saber quanto cada um vende.', mes: 297, ano: 2970, dest: true,
-      feats: ['10 conexões', '25 mil contatos ativos', 'Automações ilimitadas', 'Gerenciador de anúncios e atribuição de vendas', 'Pixel e API de Conversões', 'Teste A/B'] },
-    { code: 'scale', nome: 'Scale', desc: 'Para operações com grupos, cobrança e várias contas de anúncio.', mes: 597, ano: 5970,
-      feats: ['25 conexões', '100 mil contatos ativos', 'Campanhas e lead scoring de grupos', 'Agente de cobrança', 'Autopiloto de conversão', 'Várias contas de anúncio', 'Suporte prioritário'] },
+      feats: ['Todas as funções', '3 conexões', '5 mil contatos ativos', '20 automações e 2 funis', '2 agentes de IA', '1 conta de anúncio'] },
+    { code: 'pro', nome: 'Pro', desc: 'Para quem investe em anúncios e quer saber quanto cada um vende.', mes: 397, ano: 3970, dest: true,
+      feats: ['Todas as funções', '10 conexões', '25 mil contatos ativos', '100 automações e 5 funis', '10 agentes de IA', '3 campanhas de grupo'] },
+    { code: 'scale', nome: 'Scale', desc: 'Para operações com grupos, cobrança e várias contas de anúncio.', mes: 797, ano: 7970,
+      feats: ['Todas as funções', '25 conexões', '100 mil contatos ativos', '300 automações e 15 funis', '25 agentes de IA', '5 contas de anúncio', 'Suporte prioritário'] },
   ];
   const LIMITES = [
     ['Conexões', '1', '3', '10', '25'],
     ['Contatos ativos (30 dias)', '500', '5 mil', '25 mil', '100 mil'],
-    ['Funis no Kanban', '1', '2', '5', 'Ilimitado'],
-    ['Automações publicadas', '3', '20', 'Ilimitado', 'Ilimitado'],
-    ['Agentes de conversa', false, '2', '10', 'Ilimitado'],
-    ['Agentes de follow-up', false, '2', '10', 'Ilimitado'],
-    ['Base de conhecimento', '5 docs', '10 docs', '50 docs', '200 docs'],
-    ['Contas de anúncio', false, false, '1', 'Ilimitado'],
+    ['Funis no Kanban', '1', '2', '5', '15'],
+    ['Automações publicadas', '3', '20', '100', '300'],
+    ['Agentes de conversa', false, '2', '10', '25'],
+    ['Agentes de follow-up', false, '2', '10', '25'],
+    ['Base de conhecimento', false, '10 docs', '50 docs', '200 docs'],
+    ['Contas de anúncio', false, '1', '1', '5'],
+    ['Campanhas de grupo ativas', false, '1', '3', '10'],
     ['WhatsApp, Instagram, Messenger e Telegram', true, true, true, true],
     ['IA nos fluxos, webhooks e requisição externa', false, true, true, true],
-    ['Teste A/B, Pixel e API de Conversões', false, false, true, true],
-    ['Grupos e moderação', false, false, true, true],
-    ['Campanhas de grupo e lead scoring', false, false, false, true],
-    ['Agente de cobrança e Autopiloto de conversão', false, false, false, true],
+    ['Teste A/B, Pixel e API de Conversões', false, true, true, true],
+    ['Grupos e moderação', false, true, true, true],
+    ['Lead scoring de grupos', false, true, true, true],
+    ['Agente de cobrança e Autopiloto de conversão', false, true, true, true],
+    ['Suporte prioritário', false, false, false, true],
+  ];
+  // Adicionais (docs/limites-avulsos): o mesmo catálogo do app (Admin › Planos ›
+  // Adicionais). Preço anunciado obriga a vender (CDC arts. 30 e 35): mudou lá,
+  // muda aqui no mesmo dia.
+  const ADICIONAIS = [
+    ['conexão', '+1', 49],
+    ['contatos ativos (30 dias)', '+5 mil', 79],
+    ['automações publicadas', '+10', 29],
+    ['funil no Kanban', '+1', 19],
+    ['agente de conversa', '+1', 29],
+    ['agente de follow-up', '+1', 19],
+    ['documentos da base', '+10', 19],
+    ['conta de anúncio', '+1', 49],
+    ['campanha de grupo ativa', '+1', 29],
   ];
   function useContagem(alvo) {
     const [v, setV] = useState(alvo);
@@ -1322,29 +1349,11 @@ noscript p { padding: 120px 16px; text-align: center; }
       <a className=${'btn ' + (p.dest ? 'btn-amarelo' : p.code === 'free' ? 'btn-ghost' : 'btn-primary')} href=${CHECKOUT[p.code]}>${p.mes === 0 ? 'Começar grátis' : 'Assinar ' + p.nome}</a>
     </div>`;
   }
+  // Só o mensal: o app não vende o anual (L3 de docs/cobranca-abacatepay/
+  // conformidade-legal.md), e preço anunciado obriga a vender (CDC arts. 30 e 35).
+  // Os valores `ano` em PLANOS ficam para quando o anual voltar.
   function Planos() {
-    const [anual, setAnual] = useState(false);
-    const refs = { m: useRef(null), a: useRef(null) };
-    const toggleRef = useRef(null);
-    const [bolha, setBolha] = useState({ left: 4, width: 0 });
-    useEffect(() => {
-      const medir = () => { const el = (anual ? refs.a : refs.m).current; if (el) setBolha({ left: el.offsetLeft, width: el.offsetWidth }); };
-      medir(); window.addEventListener('resize', medir);
-      return () => window.removeEventListener('resize', medir);
-    }, [anual]);
-    const festa = () => {
-      if (reduz || !toggleRef.current) return;
-      const cores = ['#F7D400', '#4CC84C', '#0E73E8', '#3D92F2'];
-      for (let k = 0; k < 22; k++) {
-        const s = document.createElement('span'); s.className = 'confete';
-        const ang = Math.random() * Math.PI * 2; const dist = 60 + Math.random() * 90;
-        s.style.background = cores[k % cores.length];
-        s.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
-        s.style.setProperty('--dy', Math.sin(ang) * dist - 30 + 'px');
-        s.style.setProperty('--rot', Math.random() * 720 + 'deg');
-        toggleRef.current.appendChild(s); setTimeout(() => s.remove(), 1000);
-      }
-    };
+    const anual = false;
     return html`<section className="section" id="planos" style=${{ paddingTop: 0 }}>
       <div className="wrap">
         <div className="center">
@@ -1352,13 +1361,9 @@ noscript p { padding: 120px 16px; text-align: center; }
           <h2 className="h2 rev">Comece grátis.<br /><span className="grad">Cresça sem trocar de ferramenta.</span></h2>
           <p className="lead rev">Comece no Gratuito com 14 dias do plano Pro, sem cartão. Quando quiser, assine o plano que cabe na sua operação.</p>
         </div>
-        <div className="toggle" ref=${toggleRef} role="group" aria-label="Período de cobrança">
-          <span className="bolha" style=${bolha}></span>
-          <button ref=${refs.m} className=${!anual ? 'on' : ''} aria-pressed=${!anual} onClick=${() => setAnual(false)}>Mensal</button>
-          <button ref=${refs.a} className=${anual ? 'on' : ''} aria-pressed=${anual} onClick=${() => { if (!anual) festa(); setAnual(true); }}>Anual <span className="ganhe">Pague 10, use 12</span></button>
-        </div>
         <div className="planos">${PLANOS.map((p, i) => html`<${Plano} key=${p.code} p=${p} anual=${anual} i=${i} />`)}</div>
         <p className="teste rev"><${Icon} n="relogio" s=${18} /> No Gratuito você usa o Pro por 14 dias, sem cartão. Ao fim do teste, a conta segue no Gratuito. Os planos pagos são assinados com cartão já no início.</p>
+        <p className="teste rev"><${Icon} n="users" s=${18} /> Precisa de mais? O <b>Business</b> (R$ 1.497/mês) tem 100 conexões e 250 mil contatos ativos, e o <b>Business Max</b> (R$ 5.000/mês) não tem limite de conexões, contatos, automações nem agentes. <a href=${WHATSAPP_URL} target="_blank" rel="noopener">Fale com a gente</a>.</p>
         <p className="arraste">Deslize a tabela para o lado <${Icon} n="seta" s=${14} /></p>
         <div className="tabela-wrap rev">
           <table>
@@ -1367,6 +1372,11 @@ noscript p { padding: 120px 16px; text-align: center; }
               ${LIMITES.map(([rot, ...vals]) => html`<tr key=${rot}><td>${rot}</td>${vals.map((v, j) => html`<td key=${j}>${v === true ? html`<span className="sim" aria-label="Incluído"><${Icon} n="check" s=${18} w=${3} /></span>` : v === false ? html`<span className="nao" aria-label="Não incluído"><${Icon} n="x" s=${16} w=${2.5} /></span>` : v}</td>`)}</tr>`)}
             </tbody>
           </table>
+        </div>
+        <div className="adicionais-bloco rev">
+          <h3>Precisa de mais de uma coisa só?</h3>
+          <p>Nos planos pagos, adicione só o limite que faltou, sem trocar de plano. Cada pacote entra na mensalidade; ao adicionar, você paga só o proporcional do mês.</p>
+          <div className="adicionais">${ADICIONAIS.map(([nome, pacote, preco]) => html`<div key=${nome} className="adicional"><b>${pacote} ${nome}</b><span>R$ ${preco} por mês</span></div>`)}</div>
         </div>
       </div>
     </section>`;
@@ -1384,7 +1394,8 @@ noscript p { padding: 120px 16px; text-align: center; }
     ['Preciso saber programar?', html`Não. Os fluxos são montados arrastando blocos, e os agentes de IA são configurados em linguagem natural, com os seus documentos como base.`],
     ['Como funciona o teste grátis?', html`Ao criar a conta grátis você usa o plano Pro por 14 dias, sem cadastrar cartão. No fim do teste a conta segue no Gratuito, e você assina um plano quando quiser. Se preferir começar direto pelo Essencial, Pro ou Scale, a assinatura é feita com cartão já no início.`],
     ['Também dá para usar o WhatsApp Web?', html`Sim, para grupos. A conexão pelo WhatsApp Web não é oficial da Meta e não tem as garantias da API. Para atendimento e anúncios, use a conexão oficial.`],
-    ['Posso cancelar? Como funciona o reembolso?', html`Você pode cancelar a assinatura quando quiser. As condições de reembolso estão na nossa <a href=${LEGAL.reembolso}>Política de reembolso</a>.`],
+    ['Posso aumentar só um limite, sem trocar de plano?', html`Pode, em qualquer plano pago. Em Perfil, aba Adicionais, você soma pacotes de conexões, contatos ativos, automações, agentes e outros limites. Ao adicionar, paga só o proporcional do mês, e o pacote passa a vir na mensalidade. Para remover, a mudança vale na renovação, sem devolução do mês pago. Quando os adicionais passam do preço do plano seguinte, vale mais a pena subir de plano.`],
+    ['Posso cancelar? Como funciona o reembolso?', html`Pode, quando quiser, em Perfil, aba Plano, sem multa nem fidelidade: o plano vale até o fim do mês já pago. Nos 7 primeiros dias da contratação, você desiste ali mesmo e recebe o valor de volta. Se a conta paga voltar ao Gratuito, ela é apagada um mês depois, com aviso antes, e você pode exportar os seus dados até lá. Os detalhes estão na <a href=${LEGAL.reembolso}>Política de reembolso</a> e nos <a href=${LEGAL.termos}>Termos de uso</a>.`],
     ['Como falo com vocês?', html`Pelo WhatsApp <a href=${WHATSAPP_URL} target="_blank" rel="noopener">${WHATSAPP_TXT}</a> ou pelo e-mail <a href=${'mailto:' + EMAIL}>${EMAIL}</a>.`],
   ];
   function Duvidas() {
@@ -1428,7 +1439,7 @@ noscript p { padding: 120px 16px; text-align: center; }
             <p className="empresa">
               <b>Kretli Digital LTDA</b><br />
               CNPJ 42.854.979/0001-05<br />
-              Maricá, Rio de Janeiro, Brasil
+              Rua Doutor João Gomes de Mattos Sobrinho, 72, Box 130, Quadra 04, Lote 1A, Inoã, Maricá, RJ, CEP 24943-180
             </p>
           </div>
           <div>
